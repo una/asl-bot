@@ -1,7 +1,7 @@
 {
-  "name": "alabot",
+  "name": "asl-bot",
   "version": "1.0.0",
-  "description": "ALA gif slack bot",
+  "description": "ASL gif slack bot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
