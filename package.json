@@ -1,0 +1,15 @@
+{
+  "name": "alabot",
+  "version": "1.0.0",
+  "description": "ALA gif slack bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "^3.10.0",
+    "dotenv": "^4.0.0"
+  }
+}
