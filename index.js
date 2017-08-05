@@ -1,4 +1,3 @@
-// index.js
 var Slack = require('@slack/client');
 var request = require('request');
 require('dotenv').config();
@@ -17,13 +16,20 @@ const callGiphy = (message, channel) => {
   // If there is message text, search for the ASL for that message
   // If not, return a random gif
   if (message && message.text != "random") {
-    console.log(message.text);
-    request(`http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=sign%20with%20robert%20${message.text}`, function (error, response, body) {
+    let searchQuery = message.text;
+
+    // If the call comes from a channel, there is an extra paramter
+    if (message.text.indexOf(' ') >= 0){
+      searchQuery = message.text.split(' ')[1];
+    }
+
+    console.log(searchQuery);
+
+    request(`http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=sign%20with%20robert%20${searchQuery}`, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         // Data transformations here
         let dataObj = JSON.parse(body).data[0];
         let graphicFromCall = dataObj.images.fixed_height_small.url.toString();
-
 
         sendMessage(message, channel, graphicFromCall);
         

@@ -1,4 +1,4 @@
-I'll make these docs more legit later, I promise
+This is a WIP — I'll make these docs more legit later, I promise
 
 ## To get started:
 
@@ -13,4 +13,4 @@ I'll make these docs more legit later, I promise
 ## Functionality
 
 - `@asl-bot <word>`: Searches for that word in ASL under the "Sign with Robert" account
-- `@asl-bot random`: Random ASL word
+- `@asl-bot random`: Random ASL word from the "Sign with Robert" account
