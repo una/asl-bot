@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var url = require('url');
 var request = require('request');
 
 var bodyParser = require('body-parser');
@@ -9,7 +8,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('port', (process.env.PORT || 9001));
 
+app.get('/', function(req, res){
+  res.send('Hello World');
+});
+
 app.post('/post', function(req, res){
+  let searchQuery = req.body.text;
+  
   request(`http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=sign%20with%20robert%20${searchQuery}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       // Data transformations here

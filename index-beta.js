@@ -6,6 +6,10 @@ const RTM_EVENTS = Slack.RTM_EVENTS;
 
 const token = process.env.API_KEY;
 
+app.get('/', function(req, res){
+  res.send('It works!');
+});
+
 const rtm = new RtmClient(token, { logLevel: 'info' });  
 rtm.start();
 
@@ -31,10 +35,12 @@ const callGiphy = (message, channel) => {
         let dataObj = JSON.parse(body).data[0];
         let graphicFromCall = dataObj.images.fixed_height_small.url.toString();
 
-        sendMessage(message, channel, graphicFromCall);
-        
-        // closes out of node process
-        process.exit(1);
+        var body = {
+          response_type: "in_channel",
+          text: graphicFromCall
+        };
+  
+        res.send(body);
       }
     })
   } else {
