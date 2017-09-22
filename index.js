@@ -1,69 +1,31 @@
-var Slack = require('@slack/client');
+var express = require('express');
+var app = express();
+var url = require('url');
 var request = require('request');
-require('dotenv').config();
-var RtmClient = Slack.RtmClient;  
-var RTM_EVENTS = Slack.RTM_EVENTS;
 
-var token = process.env.API_KEY;
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-var rtm = new RtmClient(token, { logLevel: 'info' });  
-rtm.start();
+app.set('port', (process.env.PORT || 9001));
 
-// API Call here (API Key Public)
-// "Sign with Robert" as Query Param for
-// Giphy Search funtion and return the body
-const callGiphy = (message, channel) => {
-  // If there is message text, search for the ASL for that message
-  // If not, return a random gif
-  if (message && message.text != "random") {
-    let searchQuery = message.text;
+app.post('/post', function(req, res){
+  request(`http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=sign%20with%20robert%20${searchQuery}`, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      // Data transformations here
+      let dataObj = JSON.parse(body).data[0];
+      let graphicFromCall = dataObj.images.fixed_height_small.url.toString();
 
-    // If the call comes from a channel, there is an extra paramter
-    if (message.text.indexOf(' ') >= 0){
-      searchQuery = message.text.split(' ')[1];
+      var body = {
+        response_type: "in_channel",
+        text: graphicFromCall
+      };
+
+      res.send(body);
     }
-
-    console.log(searchQuery);
-
-    request(`http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=sign%20with%20robert%20${searchQuery}`, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        // Data transformations here
-        let dataObj = JSON.parse(body).data[0];
-        let graphicFromCall = dataObj.images.fixed_height_small.url.toString();
-
-        sendMessage(message, channel, graphicFromCall);
-        
-        // closes out of node process
-        process.exit(1);
-      }
-    })
-  } else {
-    request('http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=sign%20with%20robert', function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-
-        // Data transformations here
-        let dataObj = JSON.parse(body).data;
-        let graphicFromCall = dataObj.fixed_height_small_url.toString();
-        sendMessage(message, channel, graphicFromCall);
-        
-        // closes out of node process
-        process.exit(1);
-      }
-    })
-  }
-}
-
-// On-message event
-rtm.on(RTM_EVENTS.MESSAGE, function(message) {  
-  const channel = message.channel;
-  const text = message.text; // could be used as input
-  callGiphy(message, channel);
-  return false;
+  });
 });
 
-// Send Message Event
-// body being sent from the API call
-const sendMessage = (message, channel, graphic) => {
-  rtm.sendMessage(graphic, channel);
-  return false;
-}
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
