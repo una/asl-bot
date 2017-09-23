@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express();
 var request = require('request');
-
 var bodyParser = require('body-parser');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -14,7 +14,7 @@ app.get('/', function(req, res){
 
 app.post('/post', function(req, res){
   let searchQuery = req.body.text;
-  
+
   request(`http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=sign%20with%20robert%20${searchQuery}`, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       // Data transformations here
