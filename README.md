@@ -2,15 +2,11 @@ This is a WIP — I'll make these docs more legit later, I promise
 
 ## To get started:
 
-- Initiate ASL Bot in your Slack
-- Pull your API Key
-- Create a `.env` file
-- Store that in your `.env` as `API_KEY`
+- This uses a public Giphy API key for testing so no need to set up any environments for variables there
 - Run `node index.js`
 - Message ASL Bot
-- You should see a gif that searches for that word or serves a random gif if you say random
-
-## Functionality
-
-- `@asl-bot <word>`: Searches for that word in ASL under the "Sign with Robert" account
-- `@asl-bot random`: Random ASL word from the "Sign with Robert" account
+  - Set up a slash command in Slack
+  - Set this app up on a server
+  - Direct the slash command to `<url-for-app>/post`
+- Once this is set up, you can type `/asl <word>` and see a gif of that in ASL from Sign with Robert
+  - Warning: works *most* of the time with common words but not all of the time
